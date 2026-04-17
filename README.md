@@ -1,50 +1,113 @@
-# Welcome to your Expo app 👋
+# Worship Synk 🎵
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Um aplicativo moderno para gerenciar equipes de louvor em igrejas evangélicas.
 
-## Get started
+**Status**: MVP com dados mockados - V1.0
 
-1. Install dependencies
+## 🎯 O Que É?
 
-   ```bash
-   npm install
-   ```
+Worship Synk é uma plataforma de gerenciamento para equipes de louvor que facilita:
 
-2. Start the app
+- **👨‍💼 Administradores**: Gerenciar membros, instrumentos e configurações da equipe
+- **🎤 Líderes**: Criar cultos, montar setlists, fazer escalas
+- **🎸 Integrantes**: Visualizar suas apresentações, setlist e links de músicas
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 🚀 Quick Start
 
 ```bash
-npm run reset-project
+# Instalar dependências
+npm install
+
+# Iniciar servidor Expo
+npm start
+
+# Android
+npm run android
+
+# iOS
+npm run ios
+
+# Web
+npm run web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📱 Visão Geral das Funcionalidades
 
-## Learn more
+### Dashboard
 
-To learn more about developing your project with Expo, look at the following resources:
+- Página inicial personalizada por papel do usuário
+- Estatísticas e ações rápidas para admin
+- Próximas apresentações para integrantes
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Admin - Gerenciar Equipa
 
-## Join the community
+- Adicionar/remover membros
+- Configurar instrumentos
+- Gerenciar configurações da equipe
 
-Join our community of developers creating universal apps.
+### Líder - Cultos
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Criar e gerenciar cultos (semanais ou personalizados)
+- Adicionar setlist com toms e links
+- Criar escalas
+- Enviar informações para equipe
+
+### Integrante - Minha Escala
+
+- Ver próximas apresentações
+- Acessar setlist com toms
+- Links diretos Spotify/YouTube
+- Confirmar presença
+
+### Perfil
+
+- Visualizar informações pessoais
+- Gerenciar preferências
+- Logout
+
+## 🏗️ Estrutura
+
+```
+app/(tabs)/
+├── index.tsx              # Dashboard
+├── profile.tsx            # Perfil
+├── admin/teams.tsx        # Gerenciar equipe
+├── leader/services.tsx    # Gerenciar cultos
+└── member/schedule.tsx    # Minha escala
+```
+
+## 📚 Documentação
+
+- [TECHNICAL_README.md](./TECHNICAL_README.md) - Documentação técnica completa
+- [COMPONENTS_GUIDE.md](./COMPONENTS_GUIDE.md) - Guia de componentes
+- [SUPABASE_INTEGRATION_GUIDE.md](./SUPABASE_INTEGRATION_GUIDE.md) - Como integrar Supabase
+
+## 🎨 Design
+
+- **Tema**: Azul corporativo minimalista
+- **Tipografia**: Hierarquia clara com 6 níveis
+- **Componentes**: Button, Card, Typography (H1-3, Body, Caption, Label)
+
+## 👤 Usuário de Teste
+
+**Email**: carlos@igreja.com (Admin + Líder)
+
+## 🔧 Tecnologias
+
+- React Native + Expo
+- TypeScript
+- Expo Router
+- Context API
+- React Navigation
+
+## 📝 Próximas Fases
+
+1. Integração com Supabase
+2. Autenticação real
+3. Edição de dados
+4. Notificações push
+5. Histórico e avaliações
+
+## 📄 Licença
+
+MIT

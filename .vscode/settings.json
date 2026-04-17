@@ -3,5 +3,13 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
+  },
+  "terminal.integrated.suggest.windowsExecutableExtensions": {},
+  "chat.tools.terminal.autoApprove": {
+    "pkill": true,
+    "npx expo": true,
+    "git remote": true,
+    "command": true,
+    "gh": true
   }
 }
