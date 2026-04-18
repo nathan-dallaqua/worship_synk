@@ -47,11 +47,28 @@ export default function ServiceFormScreen() {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
-          <Text style={[styles.title, { color: colors.text }]}>Novo culto</Text>
+        <View
+          style={[
+            styles.headerBoard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+            NOVO CULTO
+          </Text>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Criar evento
+          </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Crie uma nova data de culto para organizar escala e setlist.
+            Defina data, horario e formato para iniciar o planejamento.
+          </Text>
+        </View>
+
+        <GlassPanel>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Informacoes
           </Text>
 
           <TextInput
@@ -61,7 +78,11 @@ export default function ServiceFormScreen() {
             placeholderTextColor={colors.iconSecondary}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
 
@@ -74,7 +95,11 @@ export default function ServiceFormScreen() {
               style={[
                 styles.input,
                 styles.half,
-                { borderColor: colors.border, color: colors.text },
+                {
+                  borderColor: colors.border,
+                  color: colors.text,
+                  backgroundColor: colors.surfaceSecondary,
+                },
               ]}
             />
             <TextInput
@@ -85,7 +110,11 @@ export default function ServiceFormScreen() {
               style={[
                 styles.input,
                 styles.half,
-                { borderColor: colors.border, color: colors.text },
+                {
+                  borderColor: colors.border,
+                  color: colors.text,
+                  backgroundColor: colors.surfaceSecondary,
+                },
               ]}
             />
           </View>
@@ -105,12 +134,17 @@ export default function ServiceFormScreen() {
                     {
                       borderColor: selected ? colors.tint : colors.border,
                       backgroundColor: selected
-                        ? colors.accentSoft
-                        : "transparent",
+                        ? colors.tintLighter
+                        : colors.surfaceSecondary,
                     },
                   ]}
                 >
-                  <Text style={[styles.frequencyText, { color: colors.text }]}>
+                  <Text
+                    style={[
+                      styles.frequencyText,
+                      { color: selected ? colors.tintDark : colors.text },
+                    ]}
+                  >
                     {item.label}
                   </Text>
                 </Pressable>
@@ -128,19 +162,29 @@ export default function ServiceFormScreen() {
             style={[
               styles.input,
               styles.textarea,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
-
-          <Pressable
-            onPress={handleSave}
-            style={[styles.cta, { backgroundColor: colors.tint }]}
-          >
-            <Text style={[styles.ctaText, { color: colors.background }]}>
-              Salvar culto
-            </Text>
-          </Pressable>
         </GlassPanel>
+
+        <Pressable
+          onPress={handleSave}
+          style={[
+            styles.cta,
+            {
+              backgroundColor: colors.tint,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <Text style={[styles.ctaText, { color: colors.background }]}>
+            Salvar culto
+          </Text>
+        </Pressable>
       </ScrollView>
     </LiquidBackground>
   );
@@ -149,26 +193,45 @@ export default function ServiceFormScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
     paddingBottom: Spacing.xxl,
+    gap: Spacing.lg,
   },
-  title: {
-    fontSize: 24,
+  headerBoard: {
+    borderWidth: 2,
+    borderRadius: 24,
+    borderStyle: "dashed",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
     fontWeight: "800",
   },
+  title: {
+    marginTop: 4,
+    fontSize: 30,
+    lineHeight: 34,
+    fontWeight: "900",
+  },
   subtitle: {
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: 6,
-    marginBottom: Spacing.md,
+    marginTop: 3,
+    fontSize: 14,
+    lineHeight: 19,
+  },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: "900",
+    marginBottom: Spacing.sm,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 14,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     marginBottom: Spacing.sm,
-    backgroundColor: "rgba(255,255,255,0.34)",
   },
   row: {
     flexDirection: "row",
@@ -179,7 +242,7 @@ const styles = StyleSheet.create({
   },
   frequency: {
     flex: 1,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 999,
     alignItems: "center",
     paddingVertical: Spacing.sm,
@@ -187,21 +250,22 @@ const styles = StyleSheet.create({
   },
   frequencyText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   textarea: {
-    minHeight: 90,
+    minHeight: 100,
     textAlignVertical: "top",
   },
   cta: {
-    marginTop: Spacing.md,
-    borderRadius: 16,
-    paddingVertical: Spacing.md,
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingVertical: 12,
     alignItems: "center",
+    marginBottom: 8,
   },
   ctaText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "900",
     letterSpacing: 0.6,
   },
 });

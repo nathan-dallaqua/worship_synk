@@ -10,6 +10,10 @@
     "npx expo": true,
     "git remote": true,
     "command": true,
-    "gh": true
+    "gh": true,
+    "tabs": true,
+    "app/(tabs)": true,
+    "app/forms/member.tsx": true,
+    "true": true
   }
 }

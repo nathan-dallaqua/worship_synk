@@ -1,9 +1,7 @@
-import { BorderRadius, Colors } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { BlurView } from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Platform, StyleSheet, View, ViewStyle } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 
 type GlassPanelProps = {
   children: React.ReactNode;
@@ -15,48 +13,73 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
   const colors = Colors[colorScheme ?? "light"];
 
   return (
-    <View style={[styles.shadowWrap, { shadowColor: colors.shadow }, style]}>
-      <LinearGradient
-        colors={[colors.glass, colors.surface]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
+    <View style={[styles.wrapper, { shadowColor: colors.shadow }, style]}>
+      <View
+        style={[
+          styles.offsetLayer,
+          {
+            borderColor: colors.border,
+            backgroundColor: colors.tintLighter,
+          },
+        ]}
+      />
+      <View
+        style={[
+          styles.panel,
+          {
+            borderColor: colors.border,
+            backgroundColor: colors.surface,
+          },
+        ]}
       >
-        <BlurView
-          tint={colorScheme === "dark" ? "dark" : "light"}
-          intensity={36}
-          experimentalBlurMethod={
-            Platform.OS === "android" ? "dimezisBlurView" : undefined
-          }
-          style={styles.blur}
-        >
-          <View style={[styles.inner, { borderColor: colors.glassBorder }]}>
-            {children}
-          </View>
-        </BlurView>
-      </LinearGradient>
+        <View
+          style={[
+            styles.pulse,
+            {
+              backgroundColor: colors.accent,
+              borderColor: colors.border,
+            },
+          ]}
+        />
+        <View style={styles.inner}>{children}</View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  shadowWrap: {
-    borderRadius: BorderRadius.xl,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 1,
+  wrapper: {
+    position: "relative",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 14,
+    elevation: 4,
   },
-  gradient: {
-    borderRadius: BorderRadius.xl,
+  offsetLayer: {
+    position: "absolute",
+    top: 7,
+    left: 7,
+    right: -2,
+    bottom: -2,
+    borderWidth: 2,
+    borderRadius: 20,
+  },
+  panel: {
+    borderWidth: 2,
+    borderRadius: 20,
     overflow: "hidden",
   },
-  blur: {
-    borderRadius: BorderRadius.xl,
+  pulse: {
+    width: 14,
+    height: 14,
+    borderWidth: 2,
+    borderRadius: 999,
+    marginTop: 12,
+    marginLeft: 12,
   },
   inner: {
-    borderRadius: BorderRadius.xl,
-    borderWidth: 1,
-    padding: 14,
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 14,
   },
 });

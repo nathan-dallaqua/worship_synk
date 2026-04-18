@@ -36,13 +36,13 @@ export default function InstrumentFormScreen() {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
+        <ViewHeader colors={colors} />
+
         <GlassPanel>
-          <Text style={[styles.title, { color: colors.text }]}>
-            Novo instrumento
-          </Text>
-          <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Cadastre funcoes como guitarrista, back vocal, baterista e outras.
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Dados do instrumento
           </Text>
 
           <TextInput
@@ -52,7 +52,11 @@ export default function InstrumentFormScreen() {
             placeholderTextColor={colors.iconSecondary}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
           <TextInput
@@ -60,59 +64,105 @@ export default function InstrumentFormScreen() {
             onChangeText={setDescription}
             placeholder="Descricao"
             placeholderTextColor={colors.iconSecondary}
+            multiline
+            numberOfLines={3}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              styles.textarea,
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
-
-          <Pressable
-            onPress={handleSave}
-            style={[styles.cta, { backgroundColor: colors.tint }]}
-          >
-            <Text style={[styles.ctaText, { color: colors.background }]}>
-              Salvar instrumento
-            </Text>
-          </Pressable>
         </GlassPanel>
+
+        <Pressable
+          onPress={handleSave}
+          style={[
+            styles.cta,
+            {
+              backgroundColor: colors.tint,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <Text style={[styles.ctaText, { color: colors.background }]}>
+            Salvar instrumento
+          </Text>
+        </Pressable>
       </ScrollView>
     </LiquidBackground>
+  );
+}
+
+function ViewHeader({ colors }: { colors: (typeof Colors)["light"] }) {
+  return (
+    <GlassPanel>
+      <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+        NOVO INSTRUMENTO
+      </Text>
+      <Text style={[styles.title, { color: colors.text }]}>
+        Criar funcao musical
+      </Text>
+      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+        Cadastre funcoes como guitarrista, back vocal, bateria e outras.
+      </Text>
+    </GlassPanel>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
     paddingBottom: Spacing.xxl,
+    gap: Spacing.lg,
   },
-  title: {
-    fontSize: 24,
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
     fontWeight: "800",
   },
+  title: {
+    marginTop: 4,
+    fontSize: 30,
+    lineHeight: 34,
+    fontWeight: "900",
+  },
   subtitle: {
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: 6,
-    marginBottom: Spacing.md,
+    marginTop: 3,
+    fontSize: 14,
+    lineHeight: 19,
+  },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: "900",
+    marginBottom: Spacing.sm,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 14,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     marginBottom: Spacing.sm,
-    backgroundColor: "rgba(255,255,255,0.34)",
+  },
+  textarea: {
+    minHeight: 90,
+    textAlignVertical: "top",
   },
   cta: {
-    marginTop: Spacing.md,
-    borderRadius: 16,
-    paddingVertical: Spacing.md,
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingVertical: 12,
     alignItems: "center",
+    marginBottom: 8,
   },
   ctaText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "900",
     letterSpacing: 0.6,
   },
 });

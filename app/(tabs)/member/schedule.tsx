@@ -96,14 +96,22 @@ export default function MemberScheduleScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
+        <View
+          style={[
+            styles.headerBoard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+            INTEGRANTE
+          </Text>
           <Text style={[styles.title, { color: colors.text }]}>
-            Minha agenda
+            Minha timeline
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Veja sua escala, repertorio, tom e confirme sua presenca.
+            Abra cada culto para ver repertorio e confirmar presenca.
           </Text>
-        </GlassPanel>
+        </View>
 
         {schedules.length === 0 ? (
           <GlassPanel>
@@ -111,201 +119,234 @@ export default function MemberScheduleScreen() {
               Nada por enquanto
             </Text>
             <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-              Quando voce for escalado, as informacoes vao aparecer aqui
+              Quando voce for escalado, os detalhes aparecerao aqui
               automaticamente.
             </Text>
           </GlassPanel>
         ) : (
-          schedules.map(({ schedule, service }) => {
+          schedules.map(({ schedule, service }, index) => {
             const expanded = expandedId === schedule.id;
             const setlist = service ? getSetlistForService(service.id) : [];
             const roleName =
               getInstrumentById(schedule.instrumentId)?.name ?? "Funcao";
 
             return (
-              <GlassPanel key={schedule.id}>
-                <Pressable
-                  onPress={() => setExpandedId(expanded ? null : schedule.id)}
-                  style={styles.headerRow}
-                >
-                  <View style={{ flex: 1 }}>
-                    <Text style={[styles.itemTitle, { color: colors.text }]}>
-                      {service?.title}
-                    </Text>
-                    <Text
-                      style={[styles.itemMeta, { color: colors.textSecondary }]}
-                    >
-                      {service
-                        ? formatDate(service.date, service.time)
-                        : "Data nao encontrada"}
-                    </Text>
-                    <Text style={[styles.itemRole, { color: colors.tint }]}>
-                      Papel: {roleName}
-                    </Text>
-                  </View>
-
+              <View key={schedule.id} style={styles.timelineRow}>
+                <View style={styles.timelineRail}>
                   <View
                     style={[
-                      styles.statusPill,
-                      {
-                        borderColor: schedule.confirmed
-                          ? colors.success
-                          : colors.warning,
-                        backgroundColor: schedule.confirmed
-                          ? "rgba(20, 147, 81, 0.16)"
-                          : "rgba(227, 154, 33, 0.18)",
-                      },
+                      styles.timelineDot,
+                      { backgroundColor: colors.tint },
                     ]}
-                  >
-                    <Text
+                  />
+                  {index < schedules.length - 1 ? (
+                    <View
                       style={[
-                        styles.statusText,
-                        {
-                          color: schedule.confirmed
-                            ? colors.success
-                            : colors.warning,
-                        },
+                        styles.timelineLine,
+                        { backgroundColor: colors.border },
                       ]}
-                    >
-                      {schedule.confirmed ? "Confirmado" : "Pendente"}
-                    </Text>
-                  </View>
-                </Pressable>
+                    />
+                  ) : null}
+                </View>
 
-                {expanded ? (
-                  <View style={styles.expanded}>
-                    <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                      Setlist
-                    </Text>
-                    {setlist.length ? (
-                      setlist.map((item) => (
-                        <View
-                          key={item.id}
-                          style={[
-                            styles.songRow,
-                            { borderColor: colors.borderLight },
-                          ]}
-                        >
-                          <View
-                            style={[
-                              styles.orderBadge,
-                              { backgroundColor: colors.tint },
-                            ]}
-                          >
-                            <Text
-                              style={[
-                                styles.orderText,
-                                { color: colors.background },
-                              ]}
-                            >
-                              {item.order}
-                            </Text>
-                          </View>
-                          <View style={{ flex: 1 }}>
-                            <Text
-                              style={[styles.songTitle, { color: colors.text }]}
-                            >
-                              {item.song.title}
-                            </Text>
-                            <Text
-                              style={[
-                                styles.songMeta,
-                                { color: colors.textSecondary },
-                              ]}
-                            >
-                              {item.song.artist || "Artista nao informado"}
-                            </Text>
-                            <Text
-                              style={[styles.songKey, { color: colors.tint }]}
-                            >
-                              Tom: {item.song.key}
-                            </Text>
-                            <View style={styles.linkRow}>
-                              {item.song.spotifyUrl ? (
-                                <Pressable
-                                  onPress={() =>
-                                    openExternalLink(item.song.spotifyUrl)
-                                  }
-                                  style={[
-                                    styles.linkButton,
-                                    { borderColor: colors.border },
-                                  ]}
-                                >
-                                  <Text
-                                    style={[
-                                      styles.linkText,
-                                      { color: colors.text },
-                                    ]}
-                                  >
-                                    Spotify
-                                  </Text>
-                                </Pressable>
-                              ) : null}
-                              {item.song.youtubeUrl ? (
-                                <Pressable
-                                  onPress={() =>
-                                    openExternalLink(item.song.youtubeUrl)
-                                  }
-                                  style={[
-                                    styles.linkButton,
-                                    { borderColor: colors.border },
-                                  ]}
-                                >
-                                  <Text
-                                    style={[
-                                      styles.linkText,
-                                      { color: colors.text },
-                                    ]}
-                                  >
-                                    YouTube
-                                  </Text>
-                                </Pressable>
-                              ) : null}
-                            </View>
-                          </View>
-                        </View>
-                      ))
-                    ) : (
+                <GlassPanel style={styles.timelinePanel}>
+                  <Pressable
+                    onPress={() => setExpandedId(expanded ? null : schedule.id)}
+                    style={styles.headerRow}
+                  >
+                    <View style={styles.headerMain}>
+                      <Text style={[styles.itemTitle, { color: colors.text }]}>
+                        {service?.title}
+                      </Text>
                       <Text
                         style={[
-                          styles.emptyText,
+                          styles.itemMeta,
                           { color: colors.textSecondary },
                         ]}
                       >
-                        O lider ainda nao publicou o setlist deste culto.
+                        {service
+                          ? formatDate(service.date, service.time)
+                          : "Data nao encontrada"}
                       </Text>
-                    )}
+                      <Text style={[styles.itemRole, { color: colors.accent }]}>
+                        Papel: {roleName}
+                      </Text>
+                    </View>
 
-                    <Pressable
-                      onPress={() => toggleScheduleConfirmation(schedule.id)}
+                    <View
                       style={[
-                        styles.confirmButton,
+                        styles.statusPill,
                         {
+                          borderColor: schedule.confirmed
+                            ? colors.success
+                            : colors.warning,
                           backgroundColor: schedule.confirmed
-                            ? colors.surface
-                            : colors.tint,
-                          borderColor: colors.border,
+                            ? "rgba(17, 128, 67, 0.16)"
+                            : "rgba(161, 91, 6, 0.18)",
                         },
                       ]}
                     >
                       <Text
                         style={[
-                          styles.confirmButtonText,
+                          styles.statusText,
                           {
                             color: schedule.confirmed
-                              ? colors.text
-                              : colors.background,
+                              ? colors.success
+                              : colors.warning,
                           },
                         ]}
                       >
-                        {schedule.confirmed
-                          ? "Marcar como pendente"
-                          : "Confirmar minha presenca"}
+                        {schedule.confirmed ? "Confirmado" : "Pendente"}
                       </Text>
-                    </Pressable>
-                  </View>
-                ) : null}
-              </GlassPanel>
+                    </View>
+                  </Pressable>
+
+                  {expanded ? (
+                    <View style={styles.expanded}>
+                      <Text
+                        style={[styles.sectionTitle, { color: colors.text }]}
+                      >
+                        Setlist
+                      </Text>
+                      {setlist.length ? (
+                        setlist.map((item) => (
+                          <View
+                            key={item.id}
+                            style={[
+                              styles.songRow,
+                              {
+                                borderColor: colors.border,
+                                backgroundColor: colors.surfaceSecondary,
+                              },
+                            ]}
+                          >
+                            <View
+                              style={[
+                                styles.orderBadge,
+                                { backgroundColor: colors.tint },
+                              ]}
+                            >
+                              <Text
+                                style={[
+                                  styles.orderText,
+                                  { color: colors.background },
+                                ]}
+                              >
+                                {item.order}
+                              </Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                              <Text
+                                style={[
+                                  styles.songTitle,
+                                  { color: colors.text },
+                                ]}
+                              >
+                                {item.song.title}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.songMeta,
+                                  { color: colors.textSecondary },
+                                ]}
+                              >
+                                {item.song.artist || "Artista nao informado"}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.songKey,
+                                  { color: colors.accent },
+                                ]}
+                              >
+                                Tom: {item.song.key}
+                              </Text>
+                              <View style={styles.linkRow}>
+                                {item.song.spotifyUrl ? (
+                                  <Pressable
+                                    onPress={() =>
+                                      openExternalLink(item.song.spotifyUrl)
+                                    }
+                                    style={[
+                                      styles.linkButton,
+                                      { borderColor: colors.border },
+                                    ]}
+                                  >
+                                    <Text
+                                      style={[
+                                        styles.linkText,
+                                        { color: colors.text },
+                                      ]}
+                                    >
+                                      Spotify
+                                    </Text>
+                                  </Pressable>
+                                ) : null}
+                                {item.song.youtubeUrl ? (
+                                  <Pressable
+                                    onPress={() =>
+                                      openExternalLink(item.song.youtubeUrl)
+                                    }
+                                    style={[
+                                      styles.linkButton,
+                                      { borderColor: colors.border },
+                                    ]}
+                                  >
+                                    <Text
+                                      style={[
+                                        styles.linkText,
+                                        { color: colors.text },
+                                      ]}
+                                    >
+                                      YouTube
+                                    </Text>
+                                  </Pressable>
+                                ) : null}
+                              </View>
+                            </View>
+                          </View>
+                        ))
+                      ) : (
+                        <Text
+                          style={[
+                            styles.emptyText,
+                            { color: colors.textSecondary },
+                          ]}
+                        >
+                          O lider ainda nao publicou o setlist deste culto.
+                        </Text>
+                      )}
+
+                      <Pressable
+                        onPress={() => toggleScheduleConfirmation(schedule.id)}
+                        style={[
+                          styles.confirmButton,
+                          {
+                            backgroundColor: schedule.confirmed
+                              ? colors.surfaceSecondary
+                              : colors.tint,
+                            borderColor: colors.border,
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.confirmButtonText,
+                            {
+                              color: schedule.confirmed
+                                ? colors.text
+                                : colors.background,
+                            },
+                          ]}
+                        >
+                          {schedule.confirmed
+                            ? "Marcar como pendente"
+                            : "Confirmar minha presenca"}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  ) : null}
+                </GlassPanel>
+              </View>
             );
           })
         )}
@@ -317,9 +358,10 @@ export default function MemberScheduleScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
-    paddingBottom: 110,
-    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
+    paddingBottom: 124,
+    gap: Spacing.lg,
   },
   denied: {
     flex: 1,
@@ -337,33 +379,72 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  headerBoard: {
+    borderWidth: 2,
+    borderRadius: 24,
+    borderStyle: "dashed",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
+    fontWeight: "800",
+  },
   title: {
-    fontSize: 24,
-    lineHeight: 28,
-    fontWeight: "700",
+    marginTop: 4,
+    fontSize: 32,
+    lineHeight: 36,
+    fontWeight: "900",
   },
   subtitle: {
-    marginTop: 4,
+    marginTop: 3,
     fontSize: 14,
-    lineHeight: 18,
+    lineHeight: 19,
   },
   emptyTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: "900",
   },
   emptyText: {
     marginTop: 4,
     fontSize: 14,
     lineHeight: 18,
   },
+  timelineRow: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  timelineRail: {
+    width: 16,
+    alignItems: "center",
+  },
+  timelineDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 999,
+    marginTop: 8,
+  },
+  timelineLine: {
+    width: 2,
+    flex: 1,
+    marginTop: 4,
+    marginBottom: -8,
+  },
+  timelinePanel: {
+    flex: 1,
+  },
   headerRow: {
     flexDirection: "row",
     gap: Spacing.sm,
     alignItems: "center",
   },
+  headerMain: {
+    flex: 1,
+  },
   itemTitle: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "900",
   },
   itemMeta: {
     fontSize: 12,
@@ -371,48 +452,50 @@ const styles = StyleSheet.create({
   },
   itemRole: {
     fontSize: 13,
-    fontWeight: "700",
-    marginTop: 2,
+    fontWeight: "800",
+    marginTop: 3,
   },
   statusPill: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 4,
-    paddingHorizontal: Spacing.sm,
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 9,
   },
   statusText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   expanded: {
     marginTop: Spacing.sm,
     gap: Spacing.sm,
   },
   sectionTitle: {
-    fontSize: 15,
-    fontWeight: "700",
+    fontSize: 16,
+    fontWeight: "900",
   },
   songRow: {
-    borderBottomWidth: 1,
-    paddingBottom: 7,
-    marginBottom: 7,
+    borderWidth: 2,
+    borderRadius: 12,
+    paddingHorizontal: 9,
+    paddingVertical: 8,
     flexDirection: "row",
     gap: Spacing.sm,
+    marginTop: 7,
   },
   orderBadge: {
-    width: 26,
-    height: 26,
-    borderRadius: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   orderText: {
     fontSize: 12,
-    fontWeight: "800",
+    fontWeight: "900",
   },
   songTitle: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   songMeta: {
     fontSize: 12,
@@ -420,7 +503,7 @@ const styles = StyleSheet.create({
   },
   songKey: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
     marginTop: 2,
   },
   linkRow: {
@@ -429,23 +512,24 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   linkButton: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: Spacing.sm,
+    borderWidth: 2,
+    borderRadius: 9,
+    paddingHorizontal: 9,
     paddingVertical: 5,
   },
   linkText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   confirmButton: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     alignItems: "center",
-    paddingVertical: Spacing.sm,
+    paddingVertical: 9,
+    marginTop: 4,
   },
   confirmButtonText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "800",
   },
 });

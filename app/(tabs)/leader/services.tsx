@@ -82,14 +82,22 @@ export default function LeaderServicesScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
+        <View
+          style={[
+            styles.headerBoard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+            LIDERANCA
+          </Text>
           <Text style={[styles.title, { color: colors.text }]}>
-            Planejamento do culto
+            Estacao de planejamento
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Defina setlist, tom e distribuicao de papeis por culto.
+            Monte setlist e escala do culto com uma visao operacional unica.
           </Text>
-        </GlassPanel>
+        </View>
 
         <GlassPanel>
           <Text style={[styles.panelTitle, { color: colors.text }]}>
@@ -107,20 +115,33 @@ export default function LeaderServicesScreen() {
                   key={service.id}
                   onPress={() => setSelectedServiceId(service.id)}
                   style={[
-                    styles.tag,
+                    styles.serviceCard,
                     {
                       borderColor: selected ? colors.tint : colors.border,
                       backgroundColor: selected
-                        ? colors.accentSoft
-                        : colors.surface,
+                        ? colors.tintLighter
+                        : colors.surfaceSecondary,
                     },
                   ]}
                 >
-                  <Text style={[styles.tagTitle, { color: colors.text }]}>
+                  <Text
+                    style={[
+                      styles.serviceCardTitle,
+                      { color: selected ? colors.tintDark : colors.text },
+                    ]}
+                  >
                     {service.title}
                   </Text>
                   <Text
-                    style={[styles.tagMeta, { color: colors.textSecondary }]}
+                    style={[
+                      styles.serviceCardMeta,
+                      {
+                        color: selected
+                          ? colors.tintDark
+                          : colors.textSecondary,
+                        opacity: selected ? 0.88 : 1,
+                      },
+                    ]}
                   >
                     {service.date} as {service.time}
                   </Text>
@@ -164,7 +185,13 @@ export default function LeaderServicesScreen() {
             currentSetlist.map((item) => (
               <View
                 key={item.id}
-                style={[styles.listRow, { borderColor: colors.borderLight }]}
+                style={[
+                  styles.rowCard,
+                  {
+                    borderColor: colors.border,
+                    backgroundColor: colors.surfaceSecondary,
+                  },
+                ]}
               >
                 <View
                   style={[styles.orderBadge, { backgroundColor: colors.tint }]}
@@ -184,7 +211,7 @@ export default function LeaderServicesScreen() {
                   >
                     {item.song.artist || "Artista nao informado"}
                   </Text>
-                  <Text style={[styles.keyText, { color: colors.tint }]}>
+                  <Text style={[styles.keyText, { color: colors.accent }]}>
                     Tom: {item.song.key}
                   </Text>
                   <View style={styles.links}>
@@ -263,7 +290,13 @@ export default function LeaderServicesScreen() {
                 <Pressable
                   key={schedule.id}
                   onPress={() => toggleScheduleConfirmation(schedule.id)}
-                  style={[styles.listRow, { borderColor: colors.borderLight }]}
+                  style={[
+                    styles.rowCard,
+                    {
+                      borderColor: colors.border,
+                      backgroundColor: colors.surfaceSecondary,
+                    },
+                  ]}
                 >
                   <View style={{ flex: 1 }}>
                     <Text style={[styles.itemTitle, { color: colors.text }]}>
@@ -283,8 +316,8 @@ export default function LeaderServicesScreen() {
                           ? colors.success
                           : colors.warning,
                         backgroundColor: schedule.confirmed
-                          ? "rgba(20, 147, 81, 0.16)"
-                          : "rgba(227, 154, 33, 0.18)",
+                          ? "rgba(17, 128, 67, 0.16)"
+                          : "rgba(161, 91, 6, 0.18)",
                       },
                     ]}
                   >
@@ -318,9 +351,10 @@ export default function LeaderServicesScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
-    paddingBottom: 110,
-    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
+    paddingBottom: 124,
+    gap: Spacing.lg,
   },
   denied: {
     flex: 1,
@@ -338,36 +372,50 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: "center",
   },
+  headerBoard: {
+    borderWidth: 2,
+    borderRadius: 24,
+    borderStyle: "dashed",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
+    fontWeight: "800",
+  },
   title: {
-    fontSize: 24,
-    lineHeight: 28,
-    fontWeight: "700",
+    marginTop: 4,
+    fontSize: 32,
+    lineHeight: 36,
+    fontWeight: "900",
   },
   subtitle: {
-    marginTop: 4,
+    marginTop: 3,
     fontSize: 14,
-    lineHeight: 18,
+    lineHeight: 19,
   },
   panelTitle: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "900",
   },
   horizontalRow: {
     marginTop: Spacing.sm,
     gap: Spacing.sm,
   },
-  tag: {
-    borderWidth: 1,
-    minWidth: 190,
-    borderRadius: 10,
-    padding: Spacing.sm,
-    gap: 2,
+  serviceCard: {
+    borderWidth: 2,
+    minWidth: 210,
+    borderRadius: 14,
+    paddingHorizontal: 11,
+    paddingVertical: 10,
   },
-  tagTitle: {
-    fontSize: 14,
-    fontWeight: "700",
+  serviceCardTitle: {
+    fontSize: 15,
+    fontWeight: "800",
   },
-  tagMeta: {
+  serviceCardMeta: {
+    marginTop: 2,
     fontSize: 12,
   },
   headingRow: {
@@ -378,34 +426,37 @@ const styles = StyleSheet.create({
   },
   cta: {
     borderRadius: 10,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
   },
   ctaText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
   },
-  listRow: {
-    borderBottomWidth: 1,
-    paddingVertical: 7,
+  rowCard: {
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginTop: 8,
     flexDirection: "row",
     alignItems: "center",
     gap: Spacing.sm,
   },
   orderBadge: {
-    width: 26,
-    height: 26,
-    borderRadius: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   orderText: {
     fontSize: 13,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   itemTitle: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   itemMeta: {
     fontSize: 12,
@@ -413,7 +464,7 @@ const styles = StyleSheet.create({
   },
   keyText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
     marginTop: 2,
   },
   links: {
@@ -422,24 +473,24 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   linkButton: {
-    borderWidth: 1,
-    borderRadius: 8,
+    borderWidth: 2,
+    borderRadius: 9,
     paddingVertical: 5,
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: 10,
   },
   linkText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   statusPill: {
-    borderWidth: 1,
-    borderRadius: 8,
+    borderWidth: 2,
+    borderRadius: 9,
     paddingVertical: 4,
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: 10,
   },
   statusText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   emptyText: {
     fontSize: 14,

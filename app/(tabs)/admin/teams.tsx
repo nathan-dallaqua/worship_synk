@@ -38,6 +38,12 @@ export default function AdminTeamsScreen() {
     [services],
   );
 
+  const panelMeta = {
+    members: `${currentTeam?.members.length ?? 0} membros cadastrados`,
+    services: `${upcomingServices.length} cultos no horizonte`,
+    instruments: `${currentTeam?.instruments.length ?? 0} funcoes ativas`,
+  };
+
   if (!isAdmin) {
     return (
       <LiquidBackground>
@@ -60,43 +66,61 @@ export default function AdminTeamsScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
+        <View
+          style={[
+            styles.headerBoard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+            ADMIN
+          </Text>
           <Text style={[styles.title, { color: colors.text }]}>
-            Gestao da equipe
+            Operacoes da equipe
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Organize pessoas, cultos e funcoes da equipe em um painel unico.
+            Controle de membros, cultos e instrumentos em uma central unica.
+          </Text>
+        </View>
+
+        <GlassPanel>
+          <View style={styles.segmentRail}>
+            {[
+              { key: "members", label: "Membros" },
+              { key: "services", label: "Cultos" },
+              { key: "instruments", label: "Instrumentos" },
+            ].map((item) => {
+              const selected = activePanel === item.key;
+              return (
+                <Pressable
+                  key={item.key}
+                  onPress={() => setActivePanel(item.key as Panel)}
+                  style={[
+                    styles.segment,
+                    {
+                      borderColor: selected ? colors.tint : colors.border,
+                      backgroundColor: selected
+                        ? colors.tintLighter
+                        : colors.surfaceSecondary,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.segmentText,
+                      { color: selected ? colors.tintDark : colors.text },
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+          <Text style={[styles.panelHint, { color: colors.textSecondary }]}>
+            {panelMeta[activePanel]}
           </Text>
         </GlassPanel>
-
-        <View style={styles.segmentedRow}>
-          {[
-            { key: "members", label: "Membros" },
-            { key: "services", label: "Cultos" },
-            { key: "instruments", label: "Instrumentos" },
-          ].map((item) => {
-            const selected = activePanel === item.key;
-            return (
-              <Pressable
-                key={item.key}
-                onPress={() => setActivePanel(item.key as Panel)}
-                style={[
-                  styles.segment,
-                  {
-                    borderColor: selected ? colors.tint : colors.border,
-                    backgroundColor: selected
-                      ? colors.accentSoft
-                      : colors.surface,
-                  },
-                ]}
-              >
-                <Text style={[styles.segmentText, { color: colors.text }]}>
-                  {item.label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
 
         {activePanel === "members" && (
           <GlassPanel>
@@ -106,11 +130,9 @@ export default function AdminTeamsScreen() {
               </Text>
               <Pressable
                 onPress={() => router.push("/forms/member")}
-                style={[styles.ctaSmall, { backgroundColor: colors.tint }]}
+                style={[styles.cta, { backgroundColor: colors.tint }]}
               >
-                <Text
-                  style={[styles.ctaSmallText, { color: colors.background }]}
-                >
+                <Text style={[styles.ctaText, { color: colors.background }]}>
                   Adicionar
                 </Text>
               </Pressable>
@@ -119,7 +141,13 @@ export default function AdminTeamsScreen() {
             {currentTeam?.members.map((member) => (
               <View
                 key={member.userId}
-                style={[styles.rowItem, { borderColor: colors.borderLight }]}
+                style={[
+                  styles.rowItem,
+                  {
+                    borderColor: colors.border,
+                    backgroundColor: colors.surfaceSecondary,
+                  },
+                ]}
               >
                 <Text style={[styles.itemTitle, { color: colors.text }]}>
                   {member.user.name}
@@ -154,11 +182,9 @@ export default function AdminTeamsScreen() {
               </Text>
               <Pressable
                 onPress={() => router.push("/forms/service")}
-                style={[styles.ctaSmall, { backgroundColor: colors.tint }]}
+                style={[styles.cta, { backgroundColor: colors.tint }]}
               >
-                <Text
-                  style={[styles.ctaSmallText, { color: colors.background }]}
-                >
+                <Text style={[styles.ctaText, { color: colors.background }]}>
                   Novo
                 </Text>
               </Pressable>
@@ -167,7 +193,13 @@ export default function AdminTeamsScreen() {
             {upcomingServices.map((service) => (
               <View
                 key={service.id}
-                style={[styles.rowItem, { borderColor: colors.borderLight }]}
+                style={[
+                  styles.rowItem,
+                  {
+                    borderColor: colors.border,
+                    backgroundColor: colors.surfaceSecondary,
+                  },
+                ]}
               >
                 <Text style={[styles.itemTitle, { color: colors.text }]}>
                   {service.title}
@@ -191,11 +223,9 @@ export default function AdminTeamsScreen() {
               </Text>
               <Pressable
                 onPress={() => router.push("/forms/instrument")}
-                style={[styles.ctaSmall, { backgroundColor: colors.tint }]}
+                style={[styles.cta, { backgroundColor: colors.tint }]}
               >
-                <Text
-                  style={[styles.ctaSmallText, { color: colors.background }]}
-                >
+                <Text style={[styles.ctaText, { color: colors.background }]}>
                   Novo
                 </Text>
               </Pressable>
@@ -204,7 +234,13 @@ export default function AdminTeamsScreen() {
             {currentTeam?.instruments.map((instrument) => (
               <View
                 key={instrument.id}
-                style={[styles.rowItem, { borderColor: colors.borderLight }]}
+                style={[
+                  styles.rowItem,
+                  {
+                    borderColor: colors.border,
+                    backgroundColor: colors.surfaceSecondary,
+                  },
+                ]}
               >
                 <Text style={[styles.itemTitle, { color: colors.text }]}>
                   {instrument.name}
@@ -228,9 +264,10 @@ export default function AdminTeamsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
-    paddingBottom: 110,
-    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
+    paddingBottom: 124,
+    gap: Spacing.lg,
   },
   denied: {
     flex: 1,
@@ -248,30 +285,47 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 20,
   },
+  headerBoard: {
+    borderWidth: 2,
+    borderRadius: 24,
+    borderStyle: "dashed",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
+    fontWeight: "800",
+  },
   title: {
-    fontSize: 24,
-    lineHeight: 28,
-    fontWeight: "700",
+    marginTop: 4,
+    fontSize: 32,
+    lineHeight: 36,
+    fontWeight: "900",
   },
   subtitle: {
-    marginTop: 4,
+    marginTop: 3,
     fontSize: 14,
-    lineHeight: 18,
+    lineHeight: 19,
   },
-  segmentedRow: {
+  segmentRail: {
     flexDirection: "row",
-    gap: Spacing.sm,
+    gap: 8,
   },
   segment: {
     flex: 1,
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: Spacing.sm,
+    borderWidth: 2,
+    borderRadius: 12,
+    paddingVertical: 10,
     alignItems: "center",
   },
   segmentText: {
-    fontSize: 11,
-    fontWeight: "700",
+    fontSize: 12,
+    fontWeight: "800",
+  },
+  panelHint: {
+    marginTop: Spacing.sm,
+    fontSize: 12,
   },
   headingRow: {
     flexDirection: "row",
@@ -280,25 +334,28 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   panelTitle: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "900",
   },
-  ctaSmall: {
+  cta: {
     borderRadius: 10,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
   },
-  ctaSmallText: {
+  ctaText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   rowItem: {
-    borderBottomWidth: 1,
-    paddingVertical: 7,
+    borderWidth: 2,
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginTop: 8,
   },
   itemTitle: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   itemMeta: {
     marginTop: 2,

@@ -1,12 +1,5 @@
-/**
- * Tabs Layout
- * Estrutura de abas baseada no papel do usuário (Admin, Líder, Integrante)
- */
-
-import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -19,7 +12,6 @@ export default function TabLayout() {
   const { currentUser } = useAppContext();
   const palette = Colors[colorScheme ?? "light"];
 
-  // Detecta quais abas mostrar baseado no papel do usuário
   const isAdmin = currentUser?.roles.includes("admin");
   const isLeader = currentUser?.roles.includes("leader");
   const isMember = currentUser?.roles.includes("member");
@@ -28,96 +20,92 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: palette.tint,
-        tabBarInactiveTintColor: palette.icon,
+        tabBarInactiveTintColor: palette.iconSecondary,
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarBackground: () => (
-          <BlurView
-            tint={colorScheme === "dark" ? "dark" : "light"}
-            intensity={50}
-            style={StyleSheet.absoluteFill}
-          />
-        ),
         tabBarStyle: {
           position: "absolute",
-          left: Spacing.lg,
-          right: Spacing.lg,
-          bottom: Spacing.lg,
-          borderTopColor: "transparent",
-          borderTopWidth: 0,
-          borderWidth: 1,
-          borderColor: palette.glassBorder,
-          backgroundColor: palette.glass,
-          paddingBottom: Spacing.xs,
-          paddingTop: Spacing.xs,
-          height: 58 + Spacing.md,
+          left: Spacing.md,
+          right: Spacing.md,
+          bottom: 12,
+          borderTopWidth: 2,
+          borderWidth: 2,
+          borderColor: palette.border,
+          backgroundColor: palette.surface,
+          paddingBottom: 8,
+          paddingTop: 8,
+          height: 70,
           borderRadius: 18,
-          overflow: "hidden",
+          shadowColor: palette.shadow,
+          shadowOpacity: 0.16,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 6 },
+          elevation: 5,
+        },
+        tabBarItemStyle: {
+          borderRadius: 12,
+          marginHorizontal: 2,
         },
         tabBarLabelStyle: {
           fontSize: 10,
-          fontWeight: "600",
-          marginTop: 0,
+          fontWeight: "800",
+          marginTop: 1,
+          letterSpacing: 0.2,
         },
       }}
     >
-      {/* Tela Comum a Todos */}
       <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "Inicio",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="house.fill" color={color} />
+            <IconSymbol size={23} name="house.fill" color={color} />
           ),
         }}
       />
 
-      {/* Telas de Admin */}
       {isAdmin && (
         <Tabs.Screen
           name="admin/teams"
           options={{
-            title: "Gerenciar",
+            title: "Equipe",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={24} name="person.3.fill" color={color} />
+              <IconSymbol size={23} name="person.3.fill" color={color} />
             ),
           }}
         />
       )}
 
-      {/* Telas de Líder */}
       {isLeader && (
         <Tabs.Screen
           name="leader/services"
           options={{
-            title: "Cultos",
+            title: "Planejar",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={24} name="music.note.list" color={color} />
+              <IconSymbol size={23} name="music.note.list" color={color} />
             ),
           }}
         />
       )}
 
-      {/* Telas de Integrante */}
       {isMember && (
         <Tabs.Screen
           name="member/schedule"
           options={{
-            title: "Escala",
+            title: "Agenda",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={24} name="calendar" color={color} />
+              <IconSymbol size={23} name="calendar" color={color} />
             ),
           }}
         />
       )}
 
-      {/* Perfil - Disponível para Todos */}
       <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name="person.fill" color={color} />
+            <IconSymbol size={23} name="person.fill" color={color} />
           ),
         }}
       />

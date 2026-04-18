@@ -1,134 +1,121 @@
 /**
- * Worship Synk Theme - Liquid Material Palette
+ * Worship Synk Theme - Pulse Board UI
  */
 
 import { Platform } from "react-native";
 
-// Primary palette
-const primary = "#4168F6";
-const primaryLight = "#6F86FF";
-const primaryLighter = "#E9EEFF";
-const primaryDark = "#1E37A8";
+const primary = "#0C63F6";
+const primaryLight = "#4D8EFF";
+const primaryLighter = "#DBE9FF";
+const primaryDark = "#083B96";
 
-// Neutral Colors
 const neutral = {
   white: "#FFFFFF",
   black: "#000000",
-  gray950: "#0A0E1E",
-  gray900: "#131936",
-  gray800: "#21294D",
-  gray700: "#374065",
-  gray600: "#525D84",
-  gray500: "#747FA5",
-  gray400: "#98A1C3",
-  gray300: "#BCC2DC",
-  gray200: "#DEE2F0",
-  gray100: "#EEF1FA",
-  gray50: "#F6F8FE",
+  gray950: "#10131A",
+  gray900: "#181F2B",
+  gray800: "#253046",
+  gray700: "#364766",
+  gray600: "#4D5F80",
+  gray500: "#6E7F9F",
+  gray400: "#97A4BD",
+  gray300: "#C1CBE0",
+  gray200: "#DEE4F0",
+  gray100: "#EFF3FA",
+  gray50: "#F8FAFE",
 };
 
-// Semantic Colors
 const semantic = {
-  success: "#149351",
-  warning: "#E39A21",
-  error: "#D93452",
-  info: "#4168F6",
+  success: "#118043",
+  warning: "#A15B06",
+  error: "#CF2D4E",
+  info: primary,
 };
 
 export const Colors = {
   light: {
-    // Text colors
+    white: neutral.white,
+
     text: neutral.gray900,
-    textSecondary: neutral.gray600,
+    textSecondary: neutral.gray700,
     textTertiary: neutral.gray500,
 
-    // Backgrounds
-    background: "#EEF2FF",
-    backgroundSecondary: "#F7F8FF",
-    surface: "rgba(255, 255, 255, 0.76)",
-    surfaceSecondary: "rgba(245, 248, 255, 0.82)",
+    background: "#F4F7FF",
+    backgroundSecondary: "#E9F0FF",
+    surface: "#FFFFFF",
+    surfaceSecondary: "#EEF4FF",
 
-    // Interactive
     tint: primary,
     tintLight: primaryLight,
     tintLighter: primaryLighter,
     tintDark: primaryDark,
-    accent: "#2DD9C5",
-    accentSoft: "#D7FFFA",
+    accent: "#FF6A3D",
+    accentSoft: "#FFE8DF",
 
-    // Icons
     icon: neutral.gray700,
     iconSecondary: neutral.gray400,
     tabIconDefault: neutral.gray400,
     tabIconSelected: primary,
 
-    // Semantic
     success: semantic.success,
     warning: semantic.warning,
     error: semantic.error,
     info: semantic.info,
 
-    // Borders
-    border: "rgba(130, 146, 202, 0.34)",
-    borderLight: "rgba(255, 255, 255, 0.72)",
+    border: "#BFD1EE",
+    borderLight: "#D8E3F6",
 
-    // Liquid glass
-    glass: "rgba(255, 255, 255, 0.5)",
-    glassStrong: "rgba(255, 255, 255, 0.7)",
-    glassBorder: "rgba(255, 255, 255, 0.75)",
-    gradientStart: "#DDE7FF",
-    gradientEnd: "#EAFBFF",
-    shadow: "rgba(79, 98, 173, 0.18)",
+    // Legacy compatibility keys
+    glass: "#FFFFFF",
+    glassStrong: "#FFFFFF",
+    glassBorder: "#BFD1EE",
+    gradientStart: "#E3EDFF",
+    gradientEnd: "#F8FAFE",
+    shadow: "rgba(17, 29, 55, 0.16)",
 
-    // Overlays
-    overlay: "rgba(0, 0, 0, 0.5)",
+    overlay: "rgba(0, 0, 0, 0.52)",
   },
   dark: {
-    // Text colors
-    text: "#F3F6FF",
+    white: neutral.white,
+
+    text: "#F5F8FF",
     textSecondary: neutral.gray300,
     textTertiary: neutral.gray400,
 
-    // Backgrounds
-    background: neutral.gray950,
-    backgroundSecondary: "#101833",
-    surface: "rgba(28, 35, 67, 0.78)",
-    surfaceSecondary: "rgba(37, 46, 84, 0.82)",
+    background: "#0D111A",
+    backgroundSecondary: "#121927",
+    surface: "#1A2436",
+    surfaceSecondary: "#23314A",
 
-    // Interactive
     tint: primaryLight,
     tintLight: primary,
-    tintLighter: primaryLighter,
-    tintDark: primaryDark,
-    accent: "#2DD9C5",
-    accentSoft: "rgba(45, 217, 197, 0.12)",
+    tintLighter: "#294B8B",
+    tintDark: "#7DB0FF",
+    accent: "#FF875E",
+    accentSoft: "rgba(255, 135, 94, 0.18)",
 
-    // Icons
     icon: neutral.gray300,
     iconSecondary: neutral.gray400,
-    tabIconDefault: neutral.gray400,
+    tabIconDefault: neutral.gray500,
     tabIconSelected: primaryLight,
 
-    // Semantic
     success: semantic.success,
     warning: semantic.warning,
     error: semantic.error,
     info: semantic.info,
 
-    // Borders
-    border: "rgba(148, 160, 209, 0.3)",
-    borderLight: "rgba(148, 160, 209, 0.22)",
+    border: "#334664",
+    borderLight: "#2A3B58",
 
-    // Liquid glass
-    glass: "rgba(21, 29, 60, 0.52)",
-    glassStrong: "rgba(30, 40, 74, 0.7)",
-    glassBorder: "rgba(170, 187, 235, 0.26)",
-    gradientStart: "#0D142C",
-    gradientEnd: "#1A2548",
-    shadow: "rgba(5, 8, 20, 0.5)",
+    // Legacy compatibility keys
+    glass: "#1A2436",
+    glassStrong: "#1A2436",
+    glassBorder: "#334664",
+    gradientStart: "#121D30",
+    gradientEnd: "#0D131E",
+    shadow: "rgba(0, 0, 0, 0.6)",
 
-    // Overlays
-    overlay: "rgba(0, 0, 0, 0.8)",
+    overlay: "rgba(0, 0, 0, 0.82)",
   },
 };
 
@@ -151,26 +138,21 @@ export const BorderRadius = {
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: "system-ui",
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: "ui-serif",
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: "ui-rounded",
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: "ui-monospace",
+    sans: "Avenir Next",
+    serif: "Georgia",
+    rounded: "Trebuchet MS",
+    mono: "Menlo",
   },
   default: {
-    sans: "normal",
+    sans: "sans-serif-condensed",
     serif: "serif",
-    rounded: "normal",
+    rounded: "sans-serif-medium",
     mono: "monospace",
   },
   web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded:
-      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    sans: "'Sora', 'Avenir Next', 'Trebuchet MS', 'Segoe UI', sans-serif",
+    serif: "'Merriweather', Georgia, serif",
+    rounded: "'Manrope', 'Nunito Sans', Verdana, sans-serif",
+    mono: "'JetBrains Mono', 'IBM Plex Mono', Menlo, Monaco, monospace",
   },
 });

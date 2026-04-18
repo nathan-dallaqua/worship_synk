@@ -74,14 +74,27 @@ export default function MemberFormScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
+        <View
+          style={[
+            styles.headerBoard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.kicker, { color: colors.textSecondary }]}>
+            NOVO MEMBRO
+          </Text>
           <Text style={[styles.title, { color: colors.text }]}>
-            Novo integrante
+            Cadastro de integrante
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Cadastre dados basicos, papeis e funcoes na equipe.
+            Defina dados, papeis e ministerios em um unico fluxo.
           </Text>
+        </View>
 
+        <GlassPanel>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Dados basicos
+          </Text>
           <TextInput
             value={name}
             onChangeText={setName}
@@ -89,7 +102,11 @@ export default function MemberFormScreen() {
             placeholderTextColor={colors.iconSecondary}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
           <TextInput
@@ -101,7 +118,11 @@ export default function MemberFormScreen() {
             placeholderTextColor={colors.iconSecondary}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
           <TextInput
@@ -111,11 +132,17 @@ export default function MemberFormScreen() {
             placeholderTextColor={colors.iconSecondary}
             style={[
               styles.input,
-              { borderColor: colors.border, color: colors.text },
+              {
+                borderColor: colors.border,
+                color: colors.text,
+                backgroundColor: colors.surfaceSecondary,
+              },
             ]}
           />
+        </GlassPanel>
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>
+        <GlassPanel>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Papeis
           </Text>
           <View style={styles.chips}>
@@ -130,20 +157,27 @@ export default function MemberFormScreen() {
                     {
                       borderColor: selected ? colors.tint : colors.border,
                       backgroundColor: selected
-                        ? colors.accentSoft
-                        : "transparent",
+                        ? colors.tintLighter
+                        : colors.surfaceSecondary,
                     },
                   ]}
                 >
-                  <Text style={[styles.chipText, { color: colors.text }]}>
+                  <Text
+                    style={[
+                      styles.chipText,
+                      { color: selected ? colors.tintDark : colors.text },
+                    ]}
+                  >
                     {roleLabels[role]}
                   </Text>
                 </Pressable>
               );
             })}
           </View>
+        </GlassPanel>
 
-          <Text style={[styles.label, { color: colors.textSecondary }]}>
+        <GlassPanel>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Instrumentos / ministerios
           </Text>
           <View style={styles.chips}>
@@ -158,28 +192,39 @@ export default function MemberFormScreen() {
                     {
                       borderColor: selected ? colors.tint : colors.border,
                       backgroundColor: selected
-                        ? colors.accentSoft
-                        : "transparent",
+                        ? colors.tintLighter
+                        : colors.surfaceSecondary,
                     },
                   ]}
                 >
-                  <Text style={[styles.chipText, { color: colors.text }]}>
+                  <Text
+                    style={[
+                      styles.chipText,
+                      { color: selected ? colors.tintDark : colors.text },
+                    ]}
+                  >
                     {instrument.name}
                   </Text>
                 </Pressable>
               );
             })}
           </View>
-
-          <Pressable
-            onPress={handleSave}
-            style={[styles.cta, { backgroundColor: colors.tint }]}
-          >
-            <Text style={[styles.ctaText, { color: colors.background }]}>
-              Salvar integrante
-            </Text>
-          </Pressable>
         </GlassPanel>
+
+        <Pressable
+          onPress={handleSave}
+          style={[
+            styles.cta,
+            {
+              backgroundColor: colors.tint,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <Text style={[styles.ctaText, { color: colors.background }]}>
+            Salvar integrante
+          </Text>
+        </Pressable>
       </ScrollView>
     </LiquidBackground>
   );
@@ -188,31 +233,44 @@ export default function MemberFormScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
     paddingBottom: Spacing.xxl,
+    gap: Spacing.lg,
   },
-  title: {
-    fontSize: 24,
+  headerBoard: {
+    borderWidth: 2,
+    borderRadius: 24,
+    borderStyle: "dashed",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  kicker: {
+    fontSize: 11,
+    letterSpacing: 1.2,
     fontWeight: "800",
   },
+  title: {
+    marginTop: 4,
+    fontSize: 30,
+    lineHeight: 34,
+    fontWeight: "900",
+  },
   subtitle: {
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: 6,
-    marginBottom: Spacing.md,
+    marginTop: 3,
+    fontSize: 14,
+    lineHeight: 19,
+  },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: "900",
+    marginBottom: Spacing.sm,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 14,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
-    marginBottom: Spacing.sm,
-    backgroundColor: "rgba(255,255,255,0.34)",
-  },
-  label: {
-    fontSize: 12,
-    fontWeight: "700",
-    marginTop: Spacing.sm,
     marginBottom: Spacing.sm,
   },
   chips: {
@@ -221,24 +279,25 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   chip: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 999,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
   },
   chipText: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "800",
   },
   cta: {
-    marginTop: Spacing.lg,
-    borderRadius: 16,
-    paddingVertical: Spacing.md,
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingVertical: 12,
     alignItems: "center",
+    marginBottom: 8,
   },
   ctaText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "900",
     letterSpacing: 0.6,
   },
 });

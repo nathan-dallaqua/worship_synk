@@ -44,7 +44,7 @@ export default function DashboardScreen() {
             new Date(`${service.date}T${service.time}:00`).getTime() >=
             Date.now(),
         )
-        .slice(0, 3),
+        .slice(0, 4),
     [services],
   );
 
@@ -74,6 +74,8 @@ export default function DashboardScreen() {
     ? getInstrumentById(nextAssignment.instrumentId)?.name
     : undefined;
 
+  const greetingName = currentUser?.name?.split(" ")[0] ?? "Equipe";
+
   return (
     <LiquidBackground>
       <ScrollView
@@ -81,117 +83,159 @@ export default function DashboardScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <GlassPanel>
-          <Text style={[styles.title, { color: colors.text }]}>
-            Equipe em sintonia
+        <View
+          style={[
+            styles.heroBlock,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
+        >
+          <Text style={[styles.heroKicker, { color: colors.textSecondary }]}>
+            WORSHIP SYNK
           </Text>
-          <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            {currentTeam?.name ?? "Configure sua equipe"}
+          <Text style={[styles.heroTitle, { color: colors.text }]}>
+            Painel de controle
           </Text>
+          <Text style={[styles.heroSubtitle, { color: colors.textSecondary }]}>
+            Ola, {greetingName}. Hoje voce gerencia a equipe{" "}
+            {currentTeam?.name ?? "sem nome"}.
+          </Text>
+
           <View style={styles.roleRow}>
             {currentUser?.roles.map((role) => (
               <View
                 key={role}
                 style={[
-                  styles.roleChip,
+                  styles.roleTag,
                   {
                     borderColor: colors.border,
-                    backgroundColor: "transparent",
+                    backgroundColor: colors.surfaceSecondary,
                   },
                 ]}
               >
-                <Text style={[styles.roleChipText, { color: colors.tint }]}>
+                <Text style={[styles.roleTagText, { color: colors.tintDark }]}>
                   {roleLabels[role] ?? role.toUpperCase()}
                 </Text>
               </View>
             ))}
           </View>
-        </GlassPanel>
+        </View>
 
         <GlassPanel>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Radar da equipe
+          <Text style={[styles.panelTitle, { color: colors.text }]}>
+            Indicadores
           </Text>
-          <View style={styles.metricsRow}>
-            <View style={styles.metricCard}>
-              <Text style={[styles.metricValue, { color: colors.text }]}>
+          <View style={styles.kpiGrid}>
+            <View style={[styles.kpiCard, { borderColor: colors.border }]}>
+              <Text style={[styles.kpiValue, { color: colors.text }]}>
                 {currentTeam?.members.length ?? 0}
               </Text>
-              <Text
-                style={[styles.metricLabel, { color: colors.textSecondary }]}
-              >
+              <Text style={[styles.kpiLabel, { color: colors.textSecondary }]}>
                 Membros
               </Text>
             </View>
-            <View style={styles.metricCard}>
-              <Text style={[styles.metricValue, { color: colors.text }]}>
+            <View style={[styles.kpiCard, { borderColor: colors.border }]}>
+              <Text style={[styles.kpiValue, { color: colors.text }]}>
                 {services.length}
               </Text>
-              <Text
-                style={[styles.metricLabel, { color: colors.textSecondary }]}
-              >
+              <Text style={[styles.kpiLabel, { color: colors.textSecondary }]}>
                 Cultos
               </Text>
             </View>
-            <View style={styles.metricCard}>
-              <Text style={[styles.metricValue, { color: colors.text }]}>
+            <View style={[styles.kpiCard, { borderColor: colors.border }]}>
+              <Text style={[styles.kpiValue, { color: colors.text }]}>
                 {schedules.length}
               </Text>
-              <Text
-                style={[styles.metricLabel, { color: colors.textSecondary }]}
-              >
+              <Text style={[styles.kpiLabel, { color: colors.textSecondary }]}>
                 Escalas
+              </Text>
+            </View>
+            <View style={[styles.kpiCard, { borderColor: colors.border }]}>
+              <Text style={[styles.kpiValue, { color: colors.text }]}>
+                {mySchedules.length}
+              </Text>
+              <Text style={[styles.kpiLabel, { color: colors.textSecondary }]}>
+                Minhas
               </Text>
             </View>
           </View>
         </GlassPanel>
 
         <GlassPanel>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Proximos cultos
+          <Text style={[styles.panelTitle, { color: colors.text }]}>
+            Linha do tempo dos proximos cultos
           </Text>
           {upcomingServices.length ? (
-            upcomingServices.map((service) => (
-              <View
-                key={service.id}
-                style={[styles.lineRow, { borderColor: colors.borderLight }]}
-              >
-                <View style={[styles.dot, { backgroundColor: colors.tint }]} />
-                <Text style={[styles.lineText, { color: colors.text }]}>
-                  {service.title}
-                </Text>
-                <Text
-                  style={[styles.lineMeta, { color: colors.textSecondary }]}
+            upcomingServices.map((service, index) => (
+              <View key={service.id} style={styles.timelineRow}>
+                <View style={styles.timelineRail}>
+                  <View
+                    style={[
+                      styles.timelineDot,
+                      { backgroundColor: colors.tint },
+                    ]}
+                  />
+                  {index < upcomingServices.length - 1 ? (
+                    <View
+                      style={[
+                        styles.timelineLine,
+                        { backgroundColor: colors.border },
+                      ]}
+                    />
+                  ) : null}
+                </View>
+                <View
+                  style={[
+                    styles.eventCard,
+                    {
+                      borderColor: colors.border,
+                      backgroundColor: colors.surfaceSecondary,
+                    },
+                  ]}
                 >
-                  {formatServiceDate(service.date, service.time)}
-                </Text>
+                  <Text style={[styles.eventTitle, { color: colors.text }]}>
+                    {service.title}
+                  </Text>
+                  <Text
+                    style={[styles.eventMeta, { color: colors.textSecondary }]}
+                  >
+                    {formatServiceDate(service.date, service.time)}
+                  </Text>
+                </View>
               </View>
             ))
           ) : (
-            <Text style={[styles.paragraph, { color: colors.textSecondary }]}>
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
               Nenhum culto futuro encontrado.
             </Text>
           )}
         </GlassPanel>
 
         <GlassPanel>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          <Text style={[styles.panelTitle, { color: colors.text }]}>
             Meu proximo compromisso
           </Text>
           {nextService && nextRole ? (
-            <>
-              <Text style={[styles.highlight, { color: colors.text }]}>
+            <View
+              style={[
+                styles.nextCard,
+                {
+                  borderColor: colors.border,
+                  backgroundColor: colors.surfaceSecondary,
+                },
+              ]}
+            >
+              <Text style={[styles.nextTitle, { color: colors.text }]}>
                 {nextService.title}
               </Text>
-              <Text style={[styles.paragraph, { color: colors.tint }]}>
+              <Text style={[styles.nextRole, { color: colors.accent }]}>
                 Funcao: {nextRole}
               </Text>
-              <Text style={[styles.paragraph, { color: colors.textSecondary }]}>
+              <Text style={[styles.nextMeta, { color: colors.textSecondary }]}>
                 {formatServiceDate(nextService.date, nextService.time)}
               </Text>
-            </>
+            </View>
           ) : (
-            <Text style={[styles.paragraph, { color: colors.textSecondary }]}>
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
               Voce ainda nao foi escalado para os proximos cultos.
             </Text>
           )}
@@ -204,90 +248,137 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.lg,
-    paddingBottom: 110,
-    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xl,
+    paddingBottom: 124,
+    gap: Spacing.lg,
   },
-  title: {
-    fontSize: 26,
-    lineHeight: 30,
-    fontWeight: "700",
+  heroBlock: {
+    borderRadius: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 18,
+    borderWidth: 2,
+    borderStyle: "dashed",
   },
-  subtitle: {
-    marginTop: Spacing.sm,
+  heroKicker: {
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 1.2,
+  },
+  heroTitle: {
+    marginTop: 4,
+    fontSize: 34,
+    lineHeight: 38,
+    fontWeight: "900",
+  },
+  heroSubtitle: {
+    marginTop: 3,
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 19,
   },
   roleRow: {
-    marginTop: Spacing.md,
+    marginTop: Spacing.sm,
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: Spacing.sm,
+    gap: 8,
   },
-  roleChip: {
-    borderWidth: 1,
+  roleTag: {
+    borderWidth: 2,
     borderRadius: 999,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
-  roleChipText: {
+  roleTagText: {
     fontSize: 11,
-    fontWeight: "700",
-    letterSpacing: 0.8,
+    fontWeight: "800",
+    letterSpacing: 0.6,
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    marginBottom: 2,
+  panelTitle: {
+    fontSize: 18,
+    fontWeight: "900",
   },
-  metricsRow: {
+  kpiGrid: {
+    marginTop: Spacing.sm,
     flexDirection: "row",
-    gap: Spacing.sm,
+    flexWrap: "wrap",
+    gap: 8,
   },
-  metricCard: {
-    flex: 1,
-    borderRadius: 12,
-    paddingVertical: Spacing.sm,
-    alignItems: "center",
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.35)",
+  kpiCard: {
+    width: "48.7%",
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
-  metricValue: {
-    fontSize: 20,
+  kpiValue: {
+    fontSize: 30,
+    lineHeight: 32,
+    fontWeight: "900",
+  },
+  kpiLabel: {
+    marginTop: 2,
+    fontSize: 12,
     fontWeight: "700",
   },
-  metricLabel: {
+  timelineRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 10,
+  },
+  timelineRail: {
+    width: 16,
+    alignItems: "center",
+  },
+  timelineDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 999,
+    marginTop: 6,
+  },
+  timelineLine: {
+    width: 2,
+    flex: 1,
+    marginTop: 4,
+    marginBottom: -8,
+  },
+  eventCard: {
+    flex: 1,
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 9,
+  },
+  eventTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  eventMeta: {
     marginTop: 2,
     fontSize: 12,
   },
-  lineRow: {
-    borderBottomWidth: 1,
-    paddingVertical: 6,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
+  nextCard: {
+    marginTop: 10,
+    borderWidth: 2,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 999,
-  },
-  lineText: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  lineMeta: {
-    fontSize: 10,
-  },
-  paragraph: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  highlight: {
+  nextTitle: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "900",
+  },
+  nextRole: {
+    marginTop: 3,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  nextMeta: {
     marginTop: 2,
+    fontSize: 12,
+  },
+  emptyText: {
+    marginTop: 8,
+    fontSize: 14,
+    lineHeight: 18,
   },
 });
